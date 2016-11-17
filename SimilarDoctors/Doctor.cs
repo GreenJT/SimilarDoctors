@@ -20,6 +20,10 @@ namespace SimilarDoctors
         public class SortBySpecLocScore : IComparer<Doctor>
         {
             private Doctor doctor;
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="doctor">The doctor that similarities will be drawn upon.</param>
             public SortBySpecLocScore(Doctor doctor)
             {
                 this.doctor = doctor;
@@ -36,9 +40,11 @@ namespace SimilarDoctors
                 var xDistance = GetDistance(x.Latitude, x.Longitude);
                 var yDistance = GetDistance(y.Latitude, y.Longitude);
 
-                //if the two doctors being compared are both less than 3 miles from the comparison doctor
+                //if the two doctors being compared are both less than 3 miles from the comparison the distance will be
+                //considered negligible and treated similarly to being equal.
                 if((xDistance <= 5000) && (yDistance <= 5000) || (xDistance == yDistance))
                 {
+                    //In such case the distances from the comparison doctor are equal sort by ReviewScore
                     if(x.ReviewScore > y.ReviewScore)
                     {
                         return -1;
@@ -66,8 +72,8 @@ namespace SimilarDoctors
             /// <summary>
             /// Calculates the from the class doctor and the one beng compared to
             /// </summary>
-            /// <param name="latitude"></param>
-            /// <param name="longitude"></param>
+            /// <param name="latitude">Latitude component of the current doctor.</param>
+            /// <param name="longitude">Longitude component of the current doctor.</param>
             /// <returns></returns>
             private double GetDistance(double latitude, double longitude)
             {
